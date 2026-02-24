@@ -8,7 +8,10 @@ Just a list of the apps I tend to use, so I don't forget them.
 
 - 1Password
 - brave
+- caligula
+- claude
 - docker
+- dropbox
 - eza
 - ghostty
 - git
