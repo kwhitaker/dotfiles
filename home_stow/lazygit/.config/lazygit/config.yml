@@ -1,0 +1,13 @@
+git:
+  merging:
+    manualCommit: false
+    args: ""
+
+os:
+  editPreset: "nvim"
+  edit: "nvim"
+  editAtLine: "nvim +{{line}}"
+  openDirInEditor: "nvim {{dir}}"
+
+  # Merge tool configuration
+  mergeCommand: 'nvim -c "DiffviewOpen"'
