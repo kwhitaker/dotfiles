@@ -1,0 +1,1 @@
+home_stow/shell/.zshrc
