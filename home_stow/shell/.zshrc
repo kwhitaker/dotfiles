@@ -27,11 +27,11 @@ autoload -Uz compinit
 compinit
 
 # Source zsh-autosuggestions (suggests commands as you type based on history)
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#555555'
 
 # Source zsh-syntax-highlighting (highlights commands as valid/invalid)
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Additional completion definitions
 fpath=(/usr/share/zsh/site-functions $fpath)
