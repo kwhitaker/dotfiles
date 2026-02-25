@@ -1,0 +1,12 @@
+#!/bin/bash
+# Get focused window app_id from niri
+APP_ID=$(niri msg --json focused-window 2>/dev/null | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('app_id',''))" 2>/dev/null)
+
+# List of terminal app_ids
+TERMINALS="foot|kitty|alacritty|wezterm|ghostty|gnome-terminal|konsole|xterm"
+
+if echo "$APP_ID" | grep -qiE "$TERMINALS"; then
+    wtype -M ctrl -M shift -k c -m ctrl -m shift
+else
+    wtype -M ctrl -k c -m ctrl
+fi

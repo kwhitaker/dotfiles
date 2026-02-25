@@ -1,12 +1,12 @@
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/home/kwhitaker/.rd/bin:$PATH"
+export PATH="/home/kevin/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 # Created by `pipx` on 2025-11-25 20:38:03
-export PATH="$PATH:/home/kwhitaker/.local/bin"
+export PATH="$PATH:/home/kevin/.local/bin"
 
 # Add cargo/rust binaries to PATH
-export PATH="$PATH:/home/kwhitaker/.cargo/bin"
+export PATH="$PATH:/home/kevin/.cargo/bin"
 
 # Auto complete
 # History file location
@@ -113,7 +113,7 @@ wthrr() {
 alias oc="opencode"
 
 # pnpm
-export PNPM_HOME="/home/kwhitaker/.local/share/pnpm"
+export PNPM_HOME="/home/kevin/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;

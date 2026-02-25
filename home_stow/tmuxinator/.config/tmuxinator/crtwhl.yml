@@ -1,7 +1,7 @@
 # /home/kwhitaker/.config/tmuxinator/crtwhl.yml
 
 name: crtwhl
-root: ~/Work/Cartwheel
+root: ~/Work/Cartwheel/Cartwheel
 
 # Optional tmux socket
 # socket_name: foo
