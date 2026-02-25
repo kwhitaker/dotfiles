@@ -53,7 +53,3 @@ theme = dankcolors
 # Start zsh as the shell
 command = /usr/bin/zsh
 keybind = shift+enter=text:\x1b\r
-
-# Smart Copy/Paste
-map ctrl+c copy_or_interrupt
-map ctrl+v paste_from_clipboard
