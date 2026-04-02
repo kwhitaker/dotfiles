@@ -111,6 +111,7 @@ wthrr() {
 }
 
 alias oc="opencode"
+alias lg="lazygit"
 
 # pnpm
 export PNPM_HOME="/home/kevin/.local/share/pnpm"
