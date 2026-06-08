@@ -1,0 +1,8 @@
+#!/bin/bash
+# Auto-set system timezone from public-IP geolocation on network changes.
+case "$2" in up|connectivity-change) ;; *) exit 0 ;; esac
+tz=$(curl -s --max-time 10 https://ipinfo.io/timezone)
+if [ -f "/usr/share/zoneinfo/$tz" ]; then
+  timedatectl set-timezone "$tz"
+  logger -t autotz "set timezone to $tz"
+fi
