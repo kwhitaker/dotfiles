@@ -83,6 +83,8 @@ alias ....='cd ../../..'
 
 # Tools
 alias d='docker'
+alias ddu='docker compose up -d'
+alias ddd='docker compose down'
 alias r='rails'
 n() { if [ "$#" -eq 0 ]; then nvim .; else nvim "$@"; fi; }
 
@@ -94,9 +96,10 @@ alias gcad='git commit -a --amend'
 
 alias y='yazi'
 alias cstart='pnpm start'
-alias cui='pnpm start:ui'
+alias cui='rm -rf ~/Work/Cartwheel/Cartwheel/src/ui/dist && pnpm start:ui'
 alias cmsg='pnpm start:msg-worker'
 alias ctmpl='dotnet watch --project ./src/Cartwheel.RazorTemplates.AspNetCore'
+alias claude-cw='claude --add-dir ~/Work/Cartwheel'
 alias t='tmuxinator'
 
 # wthrr alias

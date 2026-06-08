@@ -7,7 +7,7 @@ window-padding-x = 12
 window-padding-y = 12
 background-opacity = 0.95
 # background-blur-radius = 32
-maximize=true
+# maximize=true
 
 # Cursor Configuration
 cursor-style = block
@@ -50,8 +50,10 @@ keybind = shift+enter=text:\n
 # Rando stuff
 gtk-single-instance = true
 
-# Dank color generation
-theme = Catppuccin Mocha
+# DMS theme. matugen (DankMaterialShell) rewrites themes/dankcolors on every run, so this
+# tracks the live wallpaper palette.
+# WALK BACK OFF DMS: set `theme = Catppuccin Mocha` (the previous value), or any built-in.
+theme = dankcolors
 
 # Start zsh as the shell
 command = /usr/bin/zsh
