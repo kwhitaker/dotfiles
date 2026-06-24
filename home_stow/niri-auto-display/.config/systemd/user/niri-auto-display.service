@@ -1,0 +1,13 @@
+[Unit]
+Description=Re-enable internal display when external monitor is unplugged
+After=niri.service
+PartOf=niri.service
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/niri-auto-display
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=niri.service

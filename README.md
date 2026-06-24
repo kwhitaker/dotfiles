@@ -5,6 +5,39 @@
 Home-directory dotfiles live under `home_stow/` (one package per app) and are
 symlinked with stow.
 
+### niri-auto-display (needs one post-stow step)
+
+A `systemd --user` service that makes the laptop panel follow the dock under
+niri + Dank Material Shell: **internal off while an external monitor is plugged
+in; back on at 200% scale when it's unplugged.** DMS can disable the internal
+panel but never re-enables it on disconnect, and niri emits no output-hotplug
+event — so this watches DRM udev events (the same signal GNOME/KDE hook) and
+reconciles.
+
+The scale matches DMS's own "Unplugged" display profile (`eDP-1` at `scale 2`).
+It's pinned by the watcher rather than the DMS profile because DMS doesn't
+auto-switch profiles on hotplug. Change it via `INTERNAL_SCALE` at the top of
+the script (set to `None` to leave niri's auto-scale alone).
+
+Both files stow normally:
+
+- `home_stow/niri-auto-display/.local/bin/niri-auto-display` — the watcher
+- `home_stow/niri-auto-display/.config/systemd/user/niri-auto-display.service`
+
+The catch: stow symlinks the unit, but the *enablement* link
+(`niri.service.wants/…`) is something systemd writes, not stow. So on a fresh
+machine, after stowing, enable it once:
+
+```sh
+systemctl --user enable --now niri-auto-display.service
+```
+
+Watch it react: `journalctl --user -u niri-auto-display -f`, then plug/unplug.
+
+**Tradeoff:** it's a hard policy — you can't run internal + external together
+while it's active (internal dies whenever an external is live). Want both
+screens? `systemctl --user stop niri-auto-display` for the session.
+
 ## System files (not stow-managed)
 
 Root-owned files under `/etc` can't be stowed — stow only symlinks, and some
@@ -43,6 +76,7 @@ Just a list of the apps I tend to use, so I don't forget them.
 - brave
 - caligula
 - claude
+- dank material shell (DMS)
 - docker
 - dropbox
 - eza
@@ -53,6 +87,7 @@ Just a list of the apps I tend to use, so I don't forget them.
 - mise
 - mullvad
 - neovim/lazyvim
+- niri
 - obsidian
 - rancher/podman
 - rustdesk

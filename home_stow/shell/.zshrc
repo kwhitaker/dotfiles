@@ -100,6 +100,7 @@ alias cui='rm -rf ~/Work/Cartwheel/Cartwheel/src/ui/dist && pnpm start:ui'
 alias cmsg='pnpm start:msg-worker'
 alias ctmpl='dotnet watch --project ./src/Cartwheel.RazorTemplates.AspNetCore'
 alias claude-cw='claude --add-dir ~/Work/Cartwheel'
+alias oc-cw='OPENCODE_CONFIG=$HOME/Work/Cartwheel/opencode.json opencode'
 alias t='tmuxinator'
 
 # wthrr alias
