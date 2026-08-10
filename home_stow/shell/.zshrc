@@ -1,7 +1,3 @@
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/home/kevin/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
-
 # Created by `pipx` on 2025-11-25 20:38:03
 export PATH="$PATH:/home/kevin/.local/bin"
 
@@ -131,3 +127,4 @@ export PATH="$DOTNET_ROOT:$DOTNET_ROOT/tools:$PATH"
 
 # Starship prompt
 eval "$(starship init zsh)"
+alias lzd='lazydocker'
