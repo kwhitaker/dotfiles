@@ -209,15 +209,29 @@ sudo cp -a /etc/NetworkManager/system-connections "$BACKUP/nm-connections"
 
 ## 04 — Before booting the installer
 
-- [ ] **Firmware first.** `fwupdmgr refresh && fwupdmgr update` while fwupd definitely works. You're on BIOS `03.20` (2026-06-23).
+- [x] **Firmware — nothing to do.** Checked 2026-08-28: `fwupdmgr get-updates` → *No updates available*. System Firmware, UEFI dbx and the fingerprint sensor are all current. BIOS `03.20` (2026-06-23).
 - [x] **Secure Boot already disabled.** Omarchy requires it off. TPM is present (`/dev/tpm0`) — the manual says turn that off too.
 - [ ] **De-register Cloudflare WARP.** Team `crtwhl`, device ID `712a5281-1193-11f1-b64e-7abfabfd708c`. `warp-cli registration delete` so the old device doesn't eat a Zero Trust seat.
 - [ ] **Note the WARP split-tunnel include list** (policy-pushed, should return on enrollment): AWS nonprod/prod `10.221.x` `10.222.x` `172.20.0.0/16`, DO `10.132.0.0/16` `10.136.0.0/16`, K8s `10.245.0.0/16`, Cloudflare One `172.64.128.0/20` + `2606:4700:cf1::/48`.
 - [ ] **Deauthorize per-seat licences** — 1Password, Dropbox, Todoist, Slack, Zoom device lists.
-- [ ] **Verify the backup by restoring one thing.** exfat on a 96%-full drive isn't the medium to discover a problem on later.
+- [x] **Backup verified by trial restore** (2026-08-28). All six archives gzip-checked; ssh key
+  extracted at mode 600 and read by `ssh-keygen`; `git clone` from the Cartwheel bundle restored
+  17 branches with the unpushed commit intact; Plex DB `integrity_check = ok` via Plex's own
+  SQLite. The wedding folder on Hrothgar turned out to be 284 of 1379 files — resynced and
+  re-diffed to zero. **This step is why.**
 - [ ] **Bluetooth pairings die**: CIDOO V75-1 keyboard, Logitech LIFT, MX Anywhere 2. Have a wired mouse for first boot.
 - [ ] **Fingerprint** (Goodix, right index) needs re-enrolling with `fprintd-enroll`.
-- [ ] **Write the ISO with caligula** — already on your app list, already installed here.
+- [ ] **Write the Omarchy ISO.** `omarchy-4.0.1.iso`, sha256 verified 2026-08-28 against the
+  published release checksum: `69cbb4e10d98ad831c3c9f245b5757a9d1fedfd0c9592780e977d6f950dea8c3`.
+  `caligula` is on the app wishlist but was never actually installed here — use `dd` or the
+  `mediawriter` GUI. **Address the target by `/dev/disk/by-id/`, never `/dev/sdX`:** letters
+  reshuffle whenever a USB drive comes or goes, and Hrothgar and the install stick have already
+  swapped places once.
+- [ ] **Know where Hrothgar is.** It holds every copy of everything. Don't format anything until
+  it is physically accounted for and unplugged.
+- [ ] **Accept that the install stick was the Fedora retreat media.** Writing Omarchy over the
+  SanDisk destroys the `Fedora-WS-Live-43` image on it. Fine — 43 was stale, and Fedora 44 can be
+  redownloaded from the new machine — but it means there is no bootable fallback in the drawer.
 
 ---
 
