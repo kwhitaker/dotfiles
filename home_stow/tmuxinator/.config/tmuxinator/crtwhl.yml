@@ -45,16 +45,14 @@ root: ~/Work/Cartwheel/Cartwheel
 # attach: false
 
 windows:
-  - editor:
-      layout: main-vertical
-      # Synchronize all panes of this window, can be enabled before or after the pane commands run.
-      # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
-      # synchronize: after
+  - dev:
+      # tiled with exactly 4 panes gives an even 2x2 and re-evens on resize.
+      layout: tiled
       panes:
         - cui
         - cstart
         - cmsg
-      post: tmux set-window-option main-pane-width 50; tmux select-layout main-vertical
+        - ctmpl
 
   # - server: bundle exec rails s
   # - logs: tail -f log/development.log
