@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# Kill every process running in a tmux session's panes, then kill the session.
+# Not tied to any project: defaults to the session you're currently in.
+set -uo pipefail
+
+grace=3
+session=""
+
+usage() {
+  cat >&2 <<'USAGE'
+usage: tmux-nuke [-t session] [-g seconds]
+  -t  session to nuke (default: the session you're in)
+  -g  seconds to wait after SIGTERM before SIGKILL (default: 3)
+USAGE
+  exit 2
+}
+
+while getopts ':t:g:h' opt; do
+  case $opt in
+    t) session=$OPTARG ;;
+    g) grace=$OPTARG ;;
+    *) usage ;;
+  esac
+done
+
+command -v tmux >/dev/null || { echo 'tmux-nuke: tmux not found' >&2; exit 1; }
+
+[[ -n $session ]] || session=$(tmux display-message -p '#S' 2>/dev/null)
+[[ -n $session ]] || { echo 'tmux-nuke: not inside tmux and no -t given' >&2; exit 1; }
+
+tmux has-session -t "=$session" 2>/dev/null \
+  || { echo "tmux-nuke: no such session: $session" >&2; exit 1; }
+
+# Anything in our own ancestry is off limits, or we kill the script mid-run.
+declare -A protected=()
+p=$$
+while [[ -n $p && $p != 0 && $p != 1 ]]; do
+  protected[$p]=1
+  p=$(ps -o ppid= -p "$p" 2>/dev/null | tr -d ' ')
+done
+
+# Breadth-first walk of every pane's process tree. Protected pids are skipped
+# for killing but still walked, or we'd miss everything below them.
+ordered=()
+queue=()
+declare -A seen=()
+while read -r pid; do [[ -n $pid ]] && queue+=("$pid"); done \
+  < <(tmux list-panes -s -t "=$session" -F '#{pane_pid}')
+
+while ((${#queue[@]})); do
+  pid=${queue[0]}
+  queue=("${queue[@]:1}")
+  [[ -n ${seen[$pid]:-} ]] && continue
+  seen[$pid]=1
+  [[ -n ${protected[$pid]:-} ]] || ordered+=("$pid")
+  while read -r kid; do [[ -n $kid ]] && queue+=("$kid"); done \
+    < <(ps -o pid= --ppid "$pid" 2>/dev/null | tr -d ' ')
+done
+
+if ((${#ordered[@]})); then
+  # Leaves first, so a parent can't respawn a child we already killed.
+  for ((i = ${#ordered[@]} - 1; i >= 0; i--)); do
+    kill -TERM "${ordered[i]}" 2>/dev/null
+  done
+
+  deadline=$((SECONDS + grace))
+  while ((SECONDS < deadline)); do
+    alive=0
+    for pid in "${ordered[@]}"; do
+      kill -0 "$pid" 2>/dev/null && { alive=1; break; }
+    done
+    ((alive)) || break
+    sleep 0.2
+  done
+
+  for ((i = ${#ordered[@]} - 1; i >= 0; i--)); do
+    kill -KILL "${ordered[i]}" 2>/dev/null
+  done
+fi
+
+tmux kill-session -t "=$session" 2>/dev/null
+exit 0

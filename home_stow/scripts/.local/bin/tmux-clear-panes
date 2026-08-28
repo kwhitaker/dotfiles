@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Clear screen + scrollback for a set of tmux panes.
+#   tmux-clear-panes            all panes in the current window
+#   tmux-clear-panes -t <targ>  all panes in that window
+#   tmux-clear-panes -a         all panes in the session
+# Works even when a pane is running a foreground process (vite, dotnet watch),
+# which is why it's send-keys -R rather than sending `clear`.
+set -uo pipefail
+
+scope=()
+while getopts ':t:a' opt; do
+  case $opt in
+    t) scope=(-t "$OPTARG") ;;
+    a) scope=(-s) ;;
+    *) echo 'usage: tmux-clear-panes [-t window] [-a]' >&2; exit 2 ;;
+  esac
+done
+
+tmux list-panes "${scope[@]+"${scope[@]}"}" -F '#{pane_id}' | while read -r p; do
+  tmux send-keys -R -t "$p" \; clear-history -t "$p"
+done
