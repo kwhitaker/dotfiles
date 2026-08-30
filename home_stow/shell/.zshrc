@@ -1,8 +1,8 @@
 # Created by `pipx` on 2025-11-25 20:38:03
-export PATH="$PATH:/home/kevin/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # Add cargo/rust binaries to PATH
-export PATH="$PATH:/home/kevin/.cargo/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
 
 # Auto complete
 # History file location
@@ -23,11 +23,11 @@ autoload -Uz compinit
 compinit
 
 # Source zsh-autosuggestions (suggests commands as you type based on history)
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#555555'
 
 # Source zsh-syntax-highlighting (highlights commands as valid/invalid)
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Additional completion definitions
 fpath=(/usr/share/zsh/site-functions $fpath)
@@ -81,7 +81,6 @@ alias ....='cd ../../..'
 alias d='docker'
 alias ddu='docker compose up -d'
 alias ddd='docker compose down'
-alias r='rails'
 n() { if [ "$#" -eq 0 ]; then nvim .; else nvim "$@"; fi; }
 
 # Git
@@ -90,7 +89,6 @@ alias gcm='git commit -m'
 alias gcam='git commit -a -m'
 alias gcad='git commit -a --amend'
 
-alias y='yazi'
 alias cstart='pnpm start'
 alias cui='rm -rf ~/Work/Cartwheel/Cartwheel/src/ui/dist && pnpm start:ui'
 alias cmsg='pnpm start:msg-worker'
@@ -114,7 +112,7 @@ alias oc="opencode"
 alias lg="lazygit"
 
 # pnpm
-export PNPM_HOME="/home/kevin/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -122,8 +120,8 @@ esac
 # pnpm end
 
 # DOTNET
-export DOTNET_ROOT="$HOME/.dotnet"
-export PATH="$DOTNET_ROOT:$DOTNET_ROOT/tools:$PATH"
+export DOTNET_ROOT="/usr/share/dotnet"
+export PATH="$HOME/.dotnet/tools:$PATH"
 
 # Starship prompt
 eval "$(starship init zsh)"

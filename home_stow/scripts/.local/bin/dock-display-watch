@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Turn the laptop panel off whenever an external display is connected.
+#
+# Omarchy only does this in clamshell (lid shut). This extends it to lid-open
+# docking. The other direction -- external unplugged, panel back on -- needs
+# nothing here: omarchy-hyprland-monitor-watch clears the same toggle on
+# monitorremoved, which is the recovery that keeps an unplug from leaving the
+# session with no enabled output at all.
+#
+# Deliberately one-way. Re-enabling the panel by hand while docked
+# (SUPER + CTRL + Delete) stays enabled until the next hotplug.
+
+SOCKET="$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
+LOCK="${XDG_RUNTIME_DIR:-/tmp}/dock-display-watch.lock"
+TOGGLE="internal-monitor-disable"
+
+dock() {
+  (
+    flock -n 9 || exit 0
+
+    # monitoradded can land before the output is usable, and at login this runs
+    # while Hyprland is still bringing displays up, so retry rather than assume.
+    for delay in 1 3; do
+      sleep "$delay"
+      omarchy-hyprland-toggle-enabled "$TOGGLE" && break
+      omarchy-hyprland-monitor-external-active || continue
+      omarchy-hyprland-monitor-internal off >/dev/null 2>&1
+    done
+  ) 9>"$LOCK" &
+}
+
+dock
+
+while read -r event; do
+  case "$event" in
+    monitoradded\>\>* | monitoraddedv2\>\>*) dock ;;
+  esac
+done < <(socat -U - "UNIX-CONNECT:$SOCKET")
